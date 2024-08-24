@@ -46,9 +46,7 @@ public class EmployeeServiceImpl {
 		try {
 			
 			employees = mongoDBEmployeeRepo.findAll();
-			System.out.println("Size--------"+employees.size());
-			System.out.println("EMPLOYEES LIST -----------------------"+employees);
-			
+
 		} catch (Exception e) {
 		System.out.println("Found an Exception to Check");
 		}
@@ -93,7 +91,6 @@ public class EmployeeServiceImpl {
 	public String deleteEmployee(String id) {
 		String deleteStatus = "Delete In Progress";
 		try {
-			boolean searchId = false;
 			Optional<Employee> searchEmployee = mongoDBEmployeeRepo.findById(id);
 			if(searchEmployee.isPresent()) {
 				mongoDBEmployeeRepo.deleteById(id);
@@ -103,10 +100,35 @@ public class EmployeeServiceImpl {
 				deleteStatus = "Unable to Delete Employee :No employee found by the provided ID";
 			
 		}catch (Exception e) {
-			System.out.println();
+			System.out.println(e);
 			// TODO: handle exception
 		}
 		return deleteStatus;
+	}
+
+	public String updateEmployeePartially(EmployeeTO employeeTo) {
+		String saveStatus="Employee update In Progress";
+		try {
+			
+			Employee employee = Employee.builder()
+					.id(employeeTo.getId())
+					.name(employeeTo.getName())
+					.department(employeeTo.getDepartment())
+					.salary(employeeTo.getSalary())
+					.employmentStatus(employeeTo.getEmploymentStatus())
+					.build();
+			
+			Employee savedEmployee = mongoDBEmployeeRepo.save(employee);
+			if(!savedEmployee.getId().isEmpty()) {
+				saveStatus = "Employee updated Successfylly";
+			}
+			else
+				saveStatus = "Employee update not Successfull Need Triage";
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+		return saveStatus;
 	}
 
 	

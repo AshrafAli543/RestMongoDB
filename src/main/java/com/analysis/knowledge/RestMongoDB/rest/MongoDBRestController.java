@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.analysis.knowledge.RestMongoDB.entity.Employee;
 import com.analysis.knowledge.RestMongoDB.model.EmployeeTO;
 import com.analysis.knowledge.RestMongoDB.serviceImpl.EmployeeServiceImpl;
+
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -41,7 +44,7 @@ public class MongoDBRestController {
 	}
 	
 	@GetMapping("/employees-read-one")
-	public Optional<Employee> getAllEmployees(@RequestParam String id){
+	public Optional<Employee> getOneEmployee(@RequestParam String id){
 		return employeeServiceImpl.getEmployeeById(id);
 	}
 	
@@ -53,6 +56,11 @@ public class MongoDBRestController {
 	@DeleteMapping("/employee-delete")
 	public String deleteEmployee(@RequestParam String id) {
 		return employeeServiceImpl.deleteEmployee(id);
+	}
+	
+	@PatchMapping("/employee-update-patch")
+	public String updateEmployeePartially(@Valid @RequestBody EmployeeTO employeeTo) {
+		return employeeServiceImpl.updateEmployeePartially(employeeTo);
 	}
 
 }

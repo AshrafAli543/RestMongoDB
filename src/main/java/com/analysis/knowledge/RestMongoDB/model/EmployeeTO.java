@@ -3,6 +3,7 @@ package com.analysis.knowledge.RestMongoDB.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class EmployeeTO {
 	
 	@Id
 	@JsonProperty(value = "id")
+	@NotNull(message = "Id Cannot be Null")
     private String id;
 
 	@JsonProperty(value = "name")
